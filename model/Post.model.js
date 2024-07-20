@@ -19,7 +19,7 @@ export const PostSchema = new mongoose.Schema({
         unique: false,
     },
     author: { type: Schema.Types.ObjectId, ref: "User", required: [true, "post should have an author"] }
-    
+
 });
 
 
