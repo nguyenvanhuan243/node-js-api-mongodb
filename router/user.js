@@ -7,14 +7,13 @@ import * as controller from '../controllers/userController.js';
 
 
 /** POST Methods */
-
 userRouter.route('/register').post(controller.register); // register user
 userRouter.route('/login').post(controller.login); // login in app
 userRouter.route('/verify').post(controller.verifyUser, (req, res) => res.end()); // authenticate user
 
 
 /** GET Methods */
-
+userRouter.route('/').get(controller.getUsers) // get user list
 userRouter.route('/:username').get(controller.getUser) // user with username
 
 /** PUT Methods */

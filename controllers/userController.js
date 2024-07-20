@@ -2,7 +2,7 @@ import UserModel from '../model/User.model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-/** POST: http://localhost:8080/api/user/verify 
+/** POST: http://localhost:3000/api/user/verify 
  * @param : {
   "username" : "example123",
 }
@@ -26,8 +26,28 @@ export async function verifyUser(req, res, next) {
     }
 }
 
+/** GET: http://localhost:3000/api/user/users */
 
-/** POST: http://localhost:8080/api/user/register 
+export async function getUsers(req, res) {
+    try {
+        UserModel.find({}, function (err, users) {
+            if (err) return res.status(500).send({ err });
+            if (!users || users.length === 0) return res.status(501).send({ error: "Couldn't Find Any Users" });
+
+            // Remove passwords from each user object
+            const usersWithoutPasswords = users.map(user => {
+                const { password, ...rest } = Object.assign({}, user.toJSON());
+                return rest;
+            });
+
+            return res.status(201).send(usersWithoutPasswords);
+        });
+    } catch (error) {
+        return res.status(404).send({ error: "Cannot Find Users Data" });
+    }
+}
+
+/** POST: http://localhost:3000/api/user/register 
  * @param : {
   "username" : "example123",
   "password" : "admin123",
@@ -99,7 +119,7 @@ export async function register(req, res) {
 }
 
 
-/** POST: http://localhost:8080/api/user/login 
+/** POST: http://localhost:3000/api/user/login 
  * @param: {
   "username" : "example123",
   "password" : "admin123"
@@ -145,7 +165,7 @@ export async function login(req, res) {
 }
 
 
-/** GET: http://localhost:8080/api/user/example123 */
+/** GET: http://localhost:3000/api/user/example123 */
 export async function getUser(req, res) {
 
     const { username } = req.params;
@@ -171,8 +191,7 @@ export async function getUser(req, res) {
 
 }
 
-
-/** PUT: http://localhost:8080/api/user/update 
+/** PUT: http://localhost:3000/api/user/update 
  * @param: {
   "header" : "<token>"
 }
@@ -207,7 +226,7 @@ export async function updateUser(req, res) {
     }
 }
 
-/** DELETE: http://localhost:8080/api/user/delete 
+/** DELETE: http://localhost:3000/api/user/delete 
  * @param: {
   "header" : "<token>"
 }

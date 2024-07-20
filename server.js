@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 /** api routes */
-app.use('/api/user', userRouter)
+app.use('/api/users', userRouter)
 app.use('/api/post', postRouter)
 /** start server only when we have valid connection */
 connect().then(() => {
