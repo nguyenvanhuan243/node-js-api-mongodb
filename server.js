@@ -18,22 +18,23 @@ app.disable('x-powered-by'); // less hackers know about our stack
 const port = process.env.PORT || 8080;
 /** HTTP GET Request */
 app.get('/', (req, res) => {
-    res.status(201).json("Home GET Request");
+	res.status(201).json("Home GET Request");
 });
 
 /** api routes */
-app.use('/api/user', userRouter)
+app.use('/api/users', userRouter)
 app.use('/api/post', postRouter)
 /** start server only when we have valid connection */
 connect().then(() => {
-    try {
-        app.listen(port, () => {
-            console.log(`Server connected to http://localhost:${port}`);
-        })
-        swaggerDocs(app, port)
-    } catch (error) {
-        console.log('Cannot connect to the server')
-    }
+	try {
+		app.listen(port, () => {
+			console.log(`Server connected to http://localhost:${port}`);
+		})
+		swaggerDocs(app, port)
+	} catch (error) {
+		console.log('Cannot connect to the server')
+	}
 }).catch(error => {
-    console.log("Invalid database connection...!");
+	console.log("Invalid database connection...!");
+	console.log("Plz update database access: https://cloud.mongodb.com/v2/669b33db85326633803d313b#/security/network/accessList")
 })

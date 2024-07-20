@@ -1,20 +1,20 @@
 import jwt from 'jsonwebtoken';
 
 /** auth middleware */
-export default async function Auth(req, res, next){
-    try {
-        
-        // access authorize header to validate request
-        const token = req.headers.authorization.split(" ")[1];
+export default async function Auth(req, res, next) {
+	try {
 
-        // retrive the user details fo the logged in user
-        const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
+		// access authorize header to validate request
+		const token = req.headers.authorization.split(" ")[1];
 
-        req.user = decodedToken;
+		// retrive the user details fo the logged in user
+		const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
 
-        next()
+		req.user = decodedToken;
 
-    } catch (error) {
-        res.status(401).json({ error : "Authentication Failed!"})
-    }
+		next()
+
+	} catch (error) {
+		res.status(401).json({ error: "Authentication Failed!" })
+	}
 }
