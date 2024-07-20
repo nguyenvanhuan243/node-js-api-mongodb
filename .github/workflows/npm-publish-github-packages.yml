@@ -1,0 +1,42 @@
+name: NODE API SWAGGER
+
+on:
+  push:
+    branches: 
+      - develop
+      - master
+  pull_request:
+    branches: 
+      - develop
+      - master
+
+jobs:  
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    strategy:
+      matrix:
+        node-version: 
+          - 18.x
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+          cache-dependency-path: ${{ github.workspace }}/package-lock.json
+
+      - run: npm install
+
+      # - name: Deploy to Render Server (Master)
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      #   run: |
+      #     curl -X GET https:google.com
+    
+      # - name: Deploy to Render Server (Develop)
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+      #   run: |
+      #     curl -X GET 
