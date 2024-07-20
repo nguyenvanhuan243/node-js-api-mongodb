@@ -2,7 +2,7 @@ import UserModel from '../model/User.model.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-/** POST: http://localhost:3000/api/user/verify 
+/** POST: http://localhost:3000/api/users/verify 
  * @param : {
   "username" : "example123",
 }
@@ -26,7 +26,7 @@ export async function verifyUser(req, res, next) {
     }
 }
 
-/** GET: http://localhost:3000/api/user/users */
+/** GET: http://localhost:3000/api/users */
 
 export async function getUsers(req, res) {
     try {
@@ -119,7 +119,7 @@ export async function register(req, res) {
 }
 
 
-/** POST: http://localhost:3000/api/user/login 
+/** POST: http://localhost:3000/api/users/login 
  * @param: {
   "username" : "example123",
   "password" : "admin123"
@@ -165,7 +165,7 @@ export async function login(req, res) {
 }
 
 
-/** GET: http://localhost:3000/api/user/example123 */
+/** GET: http://localhost:3000/api/users/example123 */
 export async function getUser(req, res) {
 
     const { username } = req.params;
@@ -191,7 +191,7 @@ export async function getUser(req, res) {
 
 }
 
-/** PUT: http://localhost:3000/api/user/update 
+/** PUT: http://localhost:3000/api/users/update 
  * @param: {
   "header" : "<token>"
 }
@@ -226,7 +226,7 @@ export async function updateUser(req, res) {
     }
 }
 
-/** DELETE: http://localhost:3000/api/user/delete 
+/** DELETE: http://localhost:3000/api/users/delete 
  * @param: {
   "header" : "<token>"
 }
