@@ -8,46 +8,46 @@ import jwt from 'jsonwebtoken';
 }
 */
 export async function verifyUser(req, res, next) {
-    try {
+	try {
 
-        const { username } = req.method == "GET" ? req.params : req.body;
+		const { username } = req.method == "GET" ? req.params : req.body;
 
-        // check the user existance
-        let exist = await UserModel.findOne({ username });
-        if (!exist) return res.status(404).send({ error: "Can't find User!" });
-        if (exist) {
-            const { password, ...responseUser } = exist._doc;
-            return res.status(201).send({ msg: "User Verified Successfully", User: responseUser })
-        }
-        next();
+		// check the user existance
+		let exist = await UserModel.findOne({ username });
+		if (!exist) return res.status(404).send({ error: "Can't find User!" });
+		if (exist) {
+			const { password, ...responseUser } = exist._doc;
+			return res.status(201).send({ msg: "User Verified Successfully", User: responseUser })
+		}
+		next();
 
-    } catch (error) {
-        return res.status(404).send({ error: "Authentication Error" });
-    }
+	} catch (error) {
+		return res.status(404).send({ error: "Authentication Error" });
+	}
 }
 
 /** GET: http://localhost:3000/api/users */
 
 export async function getUsers(req, res) {
-    try {
-        UserModel.find({}, function (err, users) {
-            if (err) return res.status(500).send({ err });
-            if (!users || users.length === 0) return res.status(501).send({ error: "Couldn't Find Any Users" });
+	try {
+		UserModel.find({}, function (err, users) {
+			if (err) return res.status(500).send({ err });
+			if (!users || users.length === 0) return res.status(501).send({ error: "Couldn't Find Any Users" });
 
-            // Remove passwords from each user object
-            const usersWithoutPasswords = users.map(user => {
-                const { password, ...rest } = Object.assign({}, user.toJSON());
-                return rest;
-            });
+			// Remove passwords from each user object
+			const usersWithoutPasswords = users.map(user => {
+				const { password, ...rest } = Object.assign({}, user.toJSON());
+				return rest;
+			});
 
-            return res.status(201).send(usersWithoutPasswords);
-        });
-    } catch (error) {
-        return res.status(404).send({ error: "Cannot Find Users Data" });
-    }
+			return res.status(201).send(usersWithoutPasswords);
+		});
+	} catch (error) {
+		return res.status(404).send({ error: "Cannot Find Users Data" });
+	}
 }
 
-/** POST: http://localhost:3000/api/user/register 
+/** POST: http://localhost:3000/api/user/register
  * @param : {
   "username" : "example123",
   "password" : "admin123",
@@ -58,63 +58,63 @@ export async function getUsers(req, res) {
 */
 export async function register(req, res) {
 
-    try {
-        const { username, password, firstName, lastName, email } = req.body;
+	try {
+		const { username, password, firstName, lastName, email } = req.body;
 
-        // check the existing user
-        const existUsername = new Promise((resolve, reject) => {
-            UserModel.findOne({ username }, function (err, user) {
-                if (err) reject(new Error(err))
-                if (user) reject({ error: "Please use unique username" });
+		// check the existing user
+		const existUsername = new Promise((resolve, reject) => {
+			UserModel.findOne({ username }, function (err, user) {
+				if (err) reject(new Error(err))
+				if (user) reject({ error: "Please use unique username" });
 
-                resolve();
-            })
-        });
+				resolve();
+			})
+		});
 
-        // check for existing email
-        const existEmail = new Promise((resolve, reject) => {
-            UserModel.findOne({ email }, function (err, email) {
-                if (err) reject(new Error(err))
-                if (email) reject({ error: "Please use unique Email" });
+		// check for existing email
+		const existEmail = new Promise((resolve, reject) => {
+			UserModel.findOne({ email }, function (err, email) {
+				if (err) reject(new Error(err))
+				if (email) reject({ error: "Please use unique Email" });
 
-                resolve();
-            })
-        });
-
-
-        Promise.all([existUsername, existEmail])
-            .then(() => {
-                if (password) {
-                    bcrypt.hash(password, 10)
-                        .then(hashedPassword => {
-
-                            const user = new UserModel({
-                                username,
-                                password: hashedPassword,
-                                firstName,
-                                lastName,
-                                email
-                            });
-
-                            // return save result as a response
-                            user.save()
-                                .then(result => res.status(201).send({ msg: `User Register Successfully, userId is ${user._id}` }))
-                                .catch(error => res.status(500).send({ error }))
-
-                        }).catch(error => {
-                            return res.status(500).send({
-                                error: "Enable to hashed password"
-                            })
-                        })
-                }
-            }).catch(error => {
-                return res.status(500).send({ error })
-            })
+				resolve();
+			})
+		});
 
 
-    } catch (error) {
-        return res.status(500).send(error);
-    }
+		Promise.all([existUsername, existEmail])
+			.then(() => {
+				if (password) {
+					bcrypt.hash(password, 10)
+						.then(hashedPassword => {
+
+							const user = new UserModel({
+								username,
+								password: hashedPassword,
+								firstName,
+								lastName,
+								email
+							});
+
+							// return save result as a response
+							user.save()
+								.then(result => res.status(201).send({ msg: `User Register Successfully, userId is ${user._id}` }))
+								.catch(error => res.status(500).send({ error }))
+
+						}).catch(error => {
+							return res.status(500).send({
+								error: "Enable to hashed password"
+							})
+						})
+				}
+			}).catch(error => {
+				return res.status(500).send({ error })
+			})
+
+
+	} catch (error) {
+		return res.status(500).send(error);
+	}
 
 }
 
@@ -127,69 +127,69 @@ export async function register(req, res) {
 */
 export async function login(req, res) {
 
-    const { username, password } = req.body;
-    console.log("req body #################", req.body)
-    console.log("req query #################", req.query)
+	const { username, password } = req.body;
+	console.log("req body #################", req.body)
+	console.log("req query #################", req.query)
 
-    try {
+	try {
 
-        UserModel.findOne({ username })
-            .then(user => {
-                bcrypt.compare(password, user.password)
-                    .then(passwordCheck => {
+		UserModel.findOne({ username })
+			.then(user => {
+				bcrypt.compare(password, user.password)
+					.then(passwordCheck => {
 
-                        if (!passwordCheck) return res.status(400).send({ error: "Don't have Password" });
+						if (!passwordCheck) return res.status(400).send({ error: "Don't have Password" });
 
-                        // create jwt token
-                        const { _id, username } = user
-                        const accessToken = jwt.sign({
-                            userId: _id,
-                            username: username
-                        }, process.env.JWT_SECRET, { expiresIn: "24h" });
+						// create jwt token
+						const { _id, username } = user
+						const accessToken = jwt.sign({
+							userId: _id,
+							username: username
+						}, process.env.JWT_SECRET, { expiresIn: "24h" });
 
-                        return res.status(200).send({
-                            username: username,
-                            access_token: accessToken
-                        });
+						return res.status(200).send({
+							username: username,
+							access_token: accessToken
+						});
 
-                    })
-                    .catch(error => {
-                        return res.status(400).send({ error: "Password does not Match" })
-                    })
-            })
-            .catch(error => {
-                return res.status(404).send({ error: "Username not Found" });
-            })
+					})
+					.catch(error => {
+						return res.status(400).send({ error: "Password does not Match" })
+					})
+			})
+			.catch(error => {
+				return res.status(404).send({ error: "Username not Found" });
+			})
 
-    } catch (error) {
-        return res.status(500).send({ error });
-    }
+	} catch (error) {
+		return res.status(500).send({ error });
+	}
 }
 
 
 /** GET: http://localhost:3000/api/users/example123 */
 export async function getUser(req, res) {
 
-    const { username } = req.params;
+	const { username } = req.params;
 
-    try {
+	try {
 
-        if (!username) return res.status(501).send({ error: "Invalid Username" });
+		if (!username) return res.status(501).send({ error: "Invalid Username" });
 
-        UserModel.findOne({ username }, function (err, user) {
-            if (err) return res.status(500).send({ err });
-            if (!user) return res.status(501).send({ error: "Couldn't Find the User" });
+		UserModel.findOne({ username }, function (err, user) {
+			if (err) return res.status(500).send({ err });
+			if (!user) return res.status(501).send({ error: "Couldn't Find the User" });
 
-            /** remove password from user */
-            // mongoose return unnecessary data with object so convert it into json
-            const { password, ...rest } = Object.assign({}, user.toJSON());
+			/** remove password from user */
+			// mongoose return unnecessary data with object so convert it into json
+			const { password, ...rest } = Object.assign({}, user.toJSON());
 
-            return res.status(201).send(rest);
-        })
+			return res.status(201).send(rest);
+		})
 
-    } catch (error) {
-        return res.status(404).send({ error: "Cannot Find User Data" });
-    }
+	} catch (error) {
+		return res.status(404).send({ error: "Cannot Find User Data" });
+	}
 
 }
 
@@ -204,28 +204,28 @@ body: {
 }
 */
 export async function updateUser(req, res) {
-    try {
+	try {
 
-        // const id = req.query.id;
-        const { userId } = req.body;
+		// const id = req.query.id;
+		const { userId } = req.body;
 
-        if (userId) {
-            const body = req.body;
+		if (userId) {
+			const body = req.body;
 
-            // update the data
-            UserModel.updateOne({ _id: userId }, body, function (err, data) {
-                if (err) throw err;
+			// update the data
+			UserModel.updateOne({ _id: userId }, body, function (err, data) {
+				if (err) throw err;
 
-                return res.status(201).send({ msg: "Record Updated...!" });
-            })
+				return res.status(201).send({ msg: "Record Updated...!" });
+			})
 
-        } else {
-            return res.status(401).send({ error: "User Not Found...!" });
-        }
+		} else {
+			return res.status(401).send({ error: "User Not Found...!" });
+		}
 
-    } catch (error) {
-        return res.status(401).send({ error });
-    }
+	} catch (error) {
+		return res.status(401).send({ error });
+	}
 }
 
 /** DELETE: http://localhost:3000/api/users/delete 
@@ -239,25 +239,25 @@ body: {
 }
 */
 export async function deleteUser(req, res) {
-    try {
+	try {
 
-        // const id = req.query.id;
-        const { userId } = req.params;
+		// const id = req.query.id;
+		const { userId } = req.params;
 
-        if (userId) {
+		if (userId) {
 
-            // update the data
-            UserModel.deleteOne({ _id: userId }, function (err, data) {
-                if (err) throw err;
+			// update the data
+			UserModel.deleteOne({ _id: userId }, function (err, data) {
+				if (err) throw err;
 
-                return res.status(201).send({ msg: "Record Deleted...!" });
-            })
+				return res.status(201).send({ msg: "Record Deleted...!" });
+			})
 
-        } else {
-            return res.status(401).send({ error: "User Not Found...!" });
-        }
+		} else {
+			return res.status(401).send({ error: "User Not Found...!" });
+		}
 
-    } catch (error) {
-        return res.status(401).send({ error });
-    }
+	} catch (error) {
+		return res.status(401).send({ error });
+	}
 }
