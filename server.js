@@ -6,6 +6,7 @@ import connect from './database/conn.js';
 import userRouter from './router/user.js';
 import postRouter from './router/post.js';
 import swaggerDocs from './swagger.js'
+import assetRouter from './router/asset.js';
 
 dotenv.config()
 const app = express();
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 /** api routes */
 app.use('/api/users', userRouter)
 app.use('/api/post', postRouter)
+app.use('/api/assets', assetRouter)
 /** start server only when we have valid connection */
 connect().then(() => {
 	try {
