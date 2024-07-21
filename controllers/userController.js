@@ -22,21 +22,29 @@ export async function verifyUser(req, res, next) {
 	}
 }
 
-/** GET: http://localhost:3000/api/users */
+/**
+ * GET: http://localhost:3000/api/users
+ * @queryParam {number} [limit=10] - The number of users to retrieve.
+ * @returns {Array} - A list of user objects without passwords.
+ */
 export async function getUsers(req, res) {
 	try {
-		const users = await UserModel.find({});
-		if (!users || users.length === 0) return res.status(501).send({ error: "Couldn't Find Any Users" });
+			const limit = parseInt(req.query.limit, 10) || 10;
+			const users = await UserModel.find({}).limit(limit);
+			
+			if (!users || users.length === 0) {
+					return res.status(501).send({ error: "Couldn't Find Any Users" });
+			}
 
-		// Remove passwords from each user object
-		const usersWithoutPasswords = users.map(user => {
-			const { password, ...rest } = user.toJSON();
-			return rest;
-		});
+			// Remove passwords from each user object
+			const usersWithoutPasswords = users.map(user => {
+					const { password, ...rest } = user.toJSON();
+					return rest;
+			});
 
-		return res.status(201).send(usersWithoutPasswords);
+			return res.status(201).send(usersWithoutPasswords);
 	} catch (error) {
-		return res.status(404).send({ error: "Cannot Find Users Data" });
+			return res.status(404).send({ error: "Cannot Find Users Data" });
 	}
 }
 
