@@ -36,4 +36,5 @@ connect().then(() => {
 	}
 }).catch(error => {
 	console.log("Invalid database connection...!");
+	console.log("Plz update database access: https://cloud.mongodb.com/v2/669b33db85326633803d313b#/security/network/accessList")
 })
