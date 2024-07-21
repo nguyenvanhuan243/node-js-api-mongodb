@@ -23,7 +23,7 @@ export async function verifyUser(req, res, next) {
 }
 
 /**
- * GET: http://localhost:3000/api/users
+ * GET: http://localhost:3000/api/users?limit=10
  * @queryParam {number} [limit=10] - The number of users to retrieve.
  * @returns {Array} - A list of user objects without passwords.
  */
