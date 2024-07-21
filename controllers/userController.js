@@ -28,6 +28,11 @@ export async function verifyUser(req, res, next) {
  * @returns {Array} - A list of user objects without passwords.
  */
 export async function getUsers(req, res) {
+	console.log("##################################################")
+	console.log("### params", req.params)
+	console.log("### query", req.query)
+	console.log("### body", req.body)
+	console.log("##################################################")
 	try {
 			const limit = parseInt(req.query.limit, 10) || 10;
 			const users = await UserModel.find({}).limit(limit);
@@ -110,8 +115,14 @@ export async function login(req, res) {
 }
 
 /** GET: http://localhost:3000/api/users/:username */
+/** CURL: curl --location 'http://localhost:3000/api/users/nguyenvanhuan243' */
 export async function getUser(req, res) {
 	const { username } = req.params;
+	console.log("##################################################")
+	console.log("### params:", req.params)
+	console.log("### query:", req.query)
+	console.log("### body:", req.body)
+	console.log("##################################################")
 
 	try {
 		if (!username) return res.status(400).send({ error: "Invalid Username" });
