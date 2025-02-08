@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         node-version: 
-          - 18.x
+          - 20.x
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -29,7 +29,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: ${{ github.workspace }}/package-lock.json
 
-      - run: npm install
+      - run: yarn install
 
       # - name: Deploy to Render Server (Master)
       #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'

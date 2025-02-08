@@ -34,22 +34,22 @@ export async function getUsers(req, res) {
 	console.log("### body", req.body)
 	console.log("##################################################")
 	try {
-			const limit = parseInt(req.query.limit, 10) || 10;
-			const users = await UserModel.find({}).limit(limit);
-			
-			if (!users || users.length === 0) {
-					return res.status(501).send({ error: "Couldn't Find Any Users" });
-			}
+		const limit = parseInt(req.query.limit, 10) || 10;
+		const users = await UserModel.find({}).limit(limit);
 
-			// Remove passwords from each user object
-			const usersWithoutPasswords = users.map(user => {
-					const { password, ...rest } = user.toJSON();
-					return rest;
-			});
+		if (!users || users.length === 0) {
+			return res.status(501).send({ error: "Couldn't Find Any Users" });
+		}
 
-			return res.status(201).send(usersWithoutPasswords);
+		// Remove passwords from each user object
+		const usersWithoutPasswords = users.map(user => {
+			const { password, ...rest } = user.toJSON();
+			return rest;
+		});
+
+		return res.status(201).send(usersWithoutPasswords);
 	} catch (error) {
-			return res.status(404).send({ error: "Cannot Find Users Data" });
+		return res.status(404).send({ error: "Cannot Find Users Data" });
 	}
 }
 
