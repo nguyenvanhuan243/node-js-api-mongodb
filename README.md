@@ -11,3 +11,14 @@ switch to current node version
 ```
 nvm use
 ```
+
+Install and start node server
+
+```
+yarn install
+```
+
+```
+yarn start
+```
+
