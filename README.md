@@ -40,3 +40,16 @@ Get users: https://node-js-api-mongodb.onrender.com/api/health
 ```
 Get users: https://node-js-api-mongodb.onrender.com/api/users
 ```
+
+Create a new user curl
+```
+curl --location 'localhost:3000/api/users/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "huannguyendev",
+    "password": "password",
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "email": "huannguyendev@gmail.com"
+}'
+```
