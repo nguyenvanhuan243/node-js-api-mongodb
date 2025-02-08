@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import connect from './database/conn.js';
 import userRouter from './router/user.js';
-import postRouter from './router/post.js';
 import swaggerDocs from './swagger.js'
 import assetRouter from './router/asset.js';
 import healthRouter from './router/heath.js'
@@ -25,7 +24,6 @@ app.get('/', (req, res) => {
 
 /** api routes */
 app.use('/api/users', userRouter)
-app.use('/api/post', postRouter)
 app.use('/api/assets', assetRouter)
 app.use('/api/health', healthRouter)
 
