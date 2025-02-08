@@ -84,7 +84,10 @@ export async function register(req, res) {
 		});
 
 		await newUser.save();
-		return res.status(201).send({ msg: `User Register Successfully, userId is ${newUser._id}` });
+		return res.status(201).send({
+			msg: "User Register Successfully",
+			user: newUser
+		});
 	} catch (error) {
 		return res.status(500).send({ error: "Internal Server Error" });
 	}
