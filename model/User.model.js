@@ -25,8 +25,7 @@ export const UserSchema = new mongoose.Schema({
 	lastName: {
 		type: String,
 		unique: false,
-	},
-	posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+	}
 });
 
 export default mongoose.model.Users || mongoose.model('User', UserSchema);
