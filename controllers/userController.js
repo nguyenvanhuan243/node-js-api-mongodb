@@ -64,7 +64,13 @@ export async function getUsers(req, res) {
  */
 export async function register(req, res) {
 	try {
-		const { username, password, firstName, lastName, email } = req.body;
+		const {
+			username,
+			password,
+			firstName,
+			lastName,
+			email
+		} = req.body
 
 		const checkUsername = UserModel.findOne({ username }).exec();
 		const checkEmail = UserModel.findOne({ email }).exec();
