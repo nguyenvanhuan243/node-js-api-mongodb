@@ -31,12 +31,8 @@ jobs:
 
       - run: yarn install
 
-      # - name: Deploy to Render Server (Master)
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-      #   run: |
-      #     curl -X GET https:google.com
+      - name: Deploy to Render Server (Master)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          curl -X GET https://api.render.com/deploy/srv-cujj3kbv2p9s7381tjpg?key=5COja4dK9LY
     
-      # - name: Deploy to Render Server (Develop)
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-      #   run: |
-      #     curl -X GET 
